@@ -1,0 +1,21 @@
+{
+  "$id": "login",
+  "type": "object",
+  "properties": {
+    "body": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "$ref": "../defs.json#/definitions/email"
+        },
+        "password": {
+          "type": "string",
+          "minLength": 6
+        }
+      },
+      "required": ["email", "password"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["body"]
+}

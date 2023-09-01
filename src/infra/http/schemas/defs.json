@@ -1,0 +1,9 @@
+{
+    "$id": "defs",
+    "definitions": {
+        "email": {
+            "type": "string",
+            "format": "email"
+        }
+    }
+}

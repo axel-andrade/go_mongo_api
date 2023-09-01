@@ -1,0 +1,50 @@
+###
+### Example API Requests
+###
+
+
+@base_url = https://localhost:8080/api/v1
+
+###
+### Healthcheck
+###
+
+# GET Healthcheck
+GET https://localhost:8080/healthcheck
+Content-Type: application/json
+
+###
+### Authentication
+###
+
+# POST Login
+POST  https://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "password": "password"
+}
+
+# POST Logout
+POST {{@base_url}}/auth/logout
+Authorization: Bearer {{token}}
+
+###
+### Users
+###
+
+# GET Users
+GET {{@base_url}}/users
+Authorization: Bearer {{token}}
+
+# PUT Update User Profile
+PUT {{@base_url}}/users/profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "password": "newpassword"
+}

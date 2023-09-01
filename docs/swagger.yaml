@@ -1,0 +1,196 @@
+definitions:
+  common_ptr.PaginateResult:
+    properties:
+      has_next_page:
+        example: true
+        type: boolean
+      has_prev_page:
+        example: true
+        type: boolean
+      limit:
+        example: 20
+        maximum: 100
+        minimum: 1
+        type: integer
+      next_page:
+        example: 2
+        minimum: 1
+        type: integer
+      page:
+        example: 1
+        minimum: 1
+        type: integer
+      prev_page:
+        example: 1
+        minimum: 1
+        type: integer
+      total:
+        example: 50
+        type: integer
+      total_pages:
+        example: 50
+        minimum: 1
+        type: integer
+    type: object
+  common_ptr.UserFormatted:
+    properties:
+      created_at:
+        example: "2022-01-01T00:00:00Z"
+        type: string
+      email:
+        example: johndoe@example.com
+        type: string
+      id:
+        example: "123"
+        type: string
+      name:
+        example: John Doe
+        type: string
+      updated_at:
+        example: "2022-01-01T01:00:00Z"
+        type: string
+    type: object
+  login.LoginInputDTO:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  presenters.GetUsersOutputFormatted:
+    properties:
+      pagination:
+        $ref: '#/definitions/common_ptr.PaginateResult'
+      users:
+        items:
+          $ref: '#/definitions/common_ptr.UserFormatted'
+        type: array
+    type: object
+  presenters.LoginOutputFormatted:
+    properties:
+      access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        type: string
+      refresh:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        type: string
+      user:
+        $ref: '#/definitions/common_ptr.UserFormatted'
+    type: object
+  shared_err.InternalError:
+    properties:
+      message:
+        example: internal error
+        type: string
+    type: object
+  shared_err.InvalidOperationError:
+    properties:
+      message:
+        example: incorrect password
+        type: string
+    type: object
+  signup.SignupInputDTO:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Autentica o usuário com email e senha.
+      parameters:
+      - description: Corpo da solicitação
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/login.LoginInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/presenters.LoginOutputFormatted'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/shared_err.InvalidOperationError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/shared_err.InternalError'
+      summary: Autenticação de usuário
+      tags:
+      - Auth
+  /api/v1/auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: Register an user.
+      parameters:
+      - description: Corpo da solicitação
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/signup.SignupInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common_ptr.UserFormatted'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/shared_err.InvalidOperationError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/shared_err.InternalError'
+      summary: Register user
+      tags:
+      - Auth
+  /api/v1/users:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of users from the database.
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/presenters.GetUsersOutputFormatted'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/shared_err.InvalidOperationError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/shared_err.InternalError'
+      summary: Get users
+      tags:
+      - users
+swagger: "2.0"

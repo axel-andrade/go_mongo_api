@@ -1,0 +1,24 @@
+version: '3'
+
+networks:
+    shared-services:
+        external: true
+
+services:
+  go_mongo_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: go_mongo_api:latest
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - WATCH_FILES=${WATCH_FILES}
+      - DEBUG=${DEBUG}
+    ports:
+      - 3003:3003
+    volumes:
+      - .:/go/src/app  # Mapear para o diretório correto dentro do contêiner
+    networks:
+      - shared-services

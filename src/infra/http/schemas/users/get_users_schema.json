@@ -1,0 +1,29 @@
+{
+  "$id": "get_users",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "string",
+          "pattern": "^[1-9]\\d{0,2}$"
+        },
+        "page": {
+          "type": "string",
+          "pattern": "^([1-9]|10)$"
+        },
+        "search": {
+          "type": "string"
+        },
+        "sort": {
+          "type": "string"
+        }
+      },
+      "required": ["limit", "page"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["query"]
+}

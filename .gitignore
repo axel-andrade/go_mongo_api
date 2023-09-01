@@ -1,0 +1,5 @@
+.env
+__debug_bin
+tmp
+coverage
+certs
